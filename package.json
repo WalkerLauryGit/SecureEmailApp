@@ -18,9 +18,14 @@
   },
   "homepage": "https://github.com/WalkerLauryGit/SecureEmailApp#readme",
   "dependencies": {
+    "@sendgrid/mail": "^7.4.2",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "express-openid-connect": "^2.2.1",
-    "mongoose": "^5.11.16"
+    "express-session": "^1.17.1",
+    "mongoose": "^5.11.16",
+    "session": "^0.1.0"
   }
 }

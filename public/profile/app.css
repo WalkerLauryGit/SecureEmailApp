@@ -1,0 +1,68 @@
+body{
+    margin: 0;
+    
+}
+
+nav{
+    display: flex;
+    padding: 2em;    
+    margin:0;
+    background-color: antiquewhite;
+    justify-content: space-between;
+
+}
+
+#nav_username{
+    display: flex;
+    
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+#nav_icons{
+    display: flex;
+    align-items: center;
+
+}
+
+.container{
+    display: flex;
+    background-color: blanchedalmond;
+    justify-content: center;
+    height: 85vh;
+}
+
+.content{
+    display: flex;
+    background-color:rgb(190, 178, 161);
+    width: 90%;
+}
+
+.card{
+    margin: 25px;
+    border: 1px solid red;
+}
+
+.emails{
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+   
+}
+
+.meta{
+    display: flex;
+}
+
+.card-recipient{
+    margin-left: 5%;
+}
+
+footer{
+    flex-shrink: 0;
+    background-color: burlywood;
+    margin:0;
+    width: 100%;
+    padding: 2em;
+}

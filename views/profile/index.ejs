@@ -4,11 +4,38 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/profile/app.css">
     <title><%= user.name %> profile</title>
 </head>
 <body>
-    
-    
-
+    <nav>
+        <div id="nav_username"><%= user.name  %></div>
+        <div id="nav_icons">New Message</div>
+    </nav>
+    <div class="container">
+        <div class="content">
+            <div class="emails">
+                <h2 class="title">Active Emails</h2>
+                <% for(let email of emails){ %>
+                    <div class="card outer">
+                        <div class="meta">
+                            <div class="card-name">
+                                <h4>Date Sent: </h4> <span><%= email.date %></span>
+                            </div>
+                            <div class="card-recipient">
+                                <p>Recipient: <%= email.recipient %> </p>
+                            </div>
+                        </div>
+                        <div class="email-body">
+                            <p><%= email.topic %> </p>
+                        </div>
+                    </div>
+                <% } %>  
+            </div>
+        </div>
+    </div>
+<footer>
+    <p>This is made by Walker Laury Please dont sue me</p>
+</footer>
 </body>
 </html>
