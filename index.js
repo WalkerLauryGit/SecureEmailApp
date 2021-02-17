@@ -3,6 +3,7 @@ const express = require('express')
 const sgMail = require('@sendgrid/mail')
 const session = require('express-session')
 const path = require('path')
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser')
 require('dotenv').config()
 // const config = {
@@ -13,6 +14,35 @@ require('dotenv').config()
 //     clientID: 'O6wSLf7xpUfr5tppjuzVNNPiIh7fJJSJ',
 //     issuerBaseURL: 'https://wlaury.auth0.com'
 // }
+
+// DATABASE MONGOOSE CONNECTION
+mongoose.connect('mongodb://127.0.0.1:27017/securesend', {useNewUrlParser: true, useUnifiedTopology: true})
+.then(()=>{
+    console.log("The database bird has landed")
+})
+.catch(err =>{
+    console.log(err)
+})
+
+const emailSchema = new mongoose.Schema({
+    sender: String,
+    recipient: String,
+    password: String,
+    message: String,
+
+})
+
+const Email = mongoose.model('Email', emailSchema)
+// END DATABASE MONGOOSE CONNECTION
+
+
+
+
+
+
+
+
+
 
 const users = [
     {
@@ -68,20 +98,28 @@ app.get('/profile', (req, res) =>{
 })
 
 app.get('/', (req, res) => {
-    console.log(SG_API)
+    
     res.render('index')
 })
 
 app.post('/',  (req, res) => {
-    console.log(req.body)
     const {sender, recipient, password, message} = req.body
+    // Left off adding an id to the email value before saving it to the database
+    const email = new Email({ sender, recipient, password, message})
+    email.save()
+    .then((e) =>{
+        console.log(e, "successfully saved")
+    })
+    .catch(err => console.log(err));
+    
+
     const from = 'donotreply@sendingsecurely.com'
     const msg = {
         to: recipient,
         from,
         subject: `You have a message waiting from ${sender}`,
         text: message,
-        html: `<p>${message}</p>`
+        html: `Click the button to be taken to the secure messsage!<br> <a href="http://localhost:3000/viewer/${email._id}>Click here</a>"`
     }
 
     sgMail.send(msg)
@@ -90,6 +128,13 @@ app.post('/',  (req, res) => {
 
     res.redirect('/')
 })
+
+app.get('/viewer/:id', (req, res) => {
+    email = Email.findById(req.params.id)
+    console.log(email)
+    res.send(`Your email id is ${req.params.id}`)
+})
+
 
 app.listen(3000, ()=>{
     console.log("Application is listening on port 3000")
