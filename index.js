@@ -135,8 +135,11 @@ app.post('/',  (req, res) => {
 
 app.get('/viewer/:id', async (req, res) => {
     email = await  Email.findById(req.params.id)
-    console.log(email)
-    return email;
+    if(password === email.password){
+    res.render('/document', {email})
+    } else{
+        res.render('/document', {error: 'The email could not be found'})
+    }
 })
 
 

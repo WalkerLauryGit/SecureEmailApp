@@ -16,40 +16,11 @@
     </nav>
     <div class="container">
     <h2>Retrieve your Document</h2>
-    <form>
+    <form action="viewer">
         <input type="text" name="id" id="id">
         <input type="password" placeholder="document password" name="password" id="password">
         <button type="submit" id="retriever">Retrieve Message</button>
     </form>
     </div>
-    <script>
-
-        const retrieveData = async (id, password) => {
-            try{
-            fetch(`/viewer/${id}`)
-            .then(res => {
-                if(res.ok){
-                    console.log('success')
-                    return res.json()
-                }else{
-                    console.log('error')
-                }
-            })
-            .then(data => console.log(data))
-            .catch(error => console.log("Record not found"))
-        }
-        catch(error){
-            console.log(error)
-        }
-    }
-        let formButton = document.getElementById('retriever')
-        formButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            console.log("default prevented")
-            let id = document.getElementById('id')
-            let password = document.getElementById('password')
-            retrieveData(id, password)  
-        })
-    </script>
 </body>
 </html>
