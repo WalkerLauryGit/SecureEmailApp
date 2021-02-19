@@ -102,6 +102,10 @@ app.get('/', (req, res) => {
     res.render('index')
 })
 
+app.get('/document', (req, res)=>{
+    res.render('document')
+})
+
 app.post('/',  (req, res) => {
     const {sender, recipient, password, message} = req.body
     // Left off adding an id to the email value before saving it to the database
@@ -119,7 +123,7 @@ app.post('/',  (req, res) => {
         from,
         subject: `You have a message waiting from ${sender}`,
         text: message,
-        html: `Click the button to be taken to the secure messsage!<br> <a href="http://localhost:3000/viewer/${email._id}>Click here</a>"`
+        html: `<div>Click the button to be taken to the secure messsage!<br> <a href="http://localhost:3000/viewer/${email._id}>Click here</a></div>"`
     }
 
     sgMail.send(msg)
@@ -129,10 +133,10 @@ app.post('/',  (req, res) => {
     res.redirect('/')
 })
 
-app.get('/viewer/:id', (req, res) => {
-    email = Email.findById(req.params.id)
-    console.log(email)
-    res.send(`Your email id is ${req.params.id}`)
+app.get('/viewer/:id', async (req, res) => {
+    email = await  Email.findById(req.params.id)
+    
+    res.send(`Your email id is ${email.id}, your email message is ${email.message}, sent from ${email.sender} to ${email.recipient}`)
 })
 
 

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/profile/app.css">
+    <title>Open a message</title>
+</head>
+<body>
+    <h2>Retrieve your Document</h2>
+    <form id="retriever">
+        <input type="text" name="id" id="id">
+        <input type="password" placeholder="document password">
+        <button type="submit" id="retriever">Retrieve Message</button>
+    </form>
+    <script>
+
+        const retrieveData = async (id, password) => {
+            
+        }
+
+        let formButton = document.getElementById('retriever')
+        formButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            console.log("default prevented")
+        })
+
+        formButton.addEventListener('click', retrieveData(id, password))
+
+    </script>
+</body>
+</html>
