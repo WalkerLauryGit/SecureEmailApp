@@ -135,8 +135,8 @@ app.post('/',  (req, res) => {
 
 app.get('/viewer/:id', async (req, res) => {
     email = await  Email.findById(req.params.id)
-    
-    res.send(`Your email id is ${email.id}, your email message is ${email.message}, sent from ${email.sender} to ${email.recipient}`)
+    console.log(email)
+    return email;
 })
 
 
