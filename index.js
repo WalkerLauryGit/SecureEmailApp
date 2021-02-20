@@ -35,15 +35,6 @@ const emailSchema = new mongoose.Schema({
 const Email = mongoose.model('Email', emailSchema)
 // END DATABASE MONGOOSE CONNECTION
 
-
-
-
-
-
-
-
-
-
 const users = [
     {
        name: 'Walker',
@@ -133,13 +124,19 @@ app.post('/',  (req, res) => {
     res.redirect('/')
 })
 
-app.get('/viewer/:id', async (req, res) => {
-    email = await  Email.findById(req.params.id)
-    if(password === email.password){
-    res.render('/document', {email})
-    } else{
-        res.render('/document', {error: 'The email could not be found'})
-    }
+app.post('/viewer', async (req, res) => {
+    console.log(req.body)
+    email = await Email.findById(req.body.id)
+    .then(response => {
+        console.log(response)
+        console.log("Success")
+        const {sender, message} = response;
+        
+        res.render(`document`, {sender, message})
+    }).catch(err => {
+        console.log(err)
+        res.render('document')
+    })
 })
 
 

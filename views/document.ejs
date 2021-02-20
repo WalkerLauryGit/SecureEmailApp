@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="/profile/app.css">
     <title>Open a message</title>
 </head>
+
 <body>
     <nav>
         <div id="nav_username">
@@ -15,12 +17,31 @@
         <div id="nav_icons">New Message</div>
     </nav>
     <div class="container">
-    <h2>Retrieve your Document</h2>
-    <form action="viewer">
-        <input type="text" name="id" id="id">
-        <input type="password" placeholder="document password" name="password" id="password">
-        <button type="submit" id="retriever">Retrieve Message</button>
-    </form>
+        <div class="retriever_form">
+            <h2>Retrieve your Document</h2>
+            <form action="/viewer" method="POST">
+                <input type="text" name="id" id="id">
+                <input type="password" placeholder="document password" name="password" id="password">
+                <button type="submit" id="retriever">Retrieve Message</button>
+            </form>
+        </div>
+        <% if(sender){ %>
+            <div class="email">
+                <div class="from">
+                    <h2>From:</h2>
+                    <p>
+                        <%= sender %>
+                    </p>
+                </div>
+                <div class="message">
+                    <h2>Message:</h2>
+                    <p>
+                        <%= message %>
+                    </p>
+                </div>
+            </div>
     </div>
+    <% } %>
 </body>
+
 </html>
