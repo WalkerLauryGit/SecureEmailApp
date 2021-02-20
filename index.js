@@ -29,6 +29,7 @@ const emailSchema = new mongoose.Schema({
     recipient: String,
     password: String,
     message: String,
+    
 
 })
 
@@ -94,7 +95,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/document', (req, res)=>{
-    res.render('document')
+    res.render('document', {sender: '', message: ''})
 })
 
 app.post('/',  (req, res) => {
@@ -135,7 +136,7 @@ app.post('/viewer', async (req, res) => {
         res.render(`document`, {sender, message})
     }).catch(err => {
         console.log(err)
-        res.render('document')
+        res.render('document', {sender: '', message: ''})
     })
 })
 

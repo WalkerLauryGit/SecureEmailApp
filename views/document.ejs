@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/profile/app.css">
+    <link rel="stylesheet" href="/profile/document.css">
     <title>Open a message</title>
 </head>
 
@@ -14,18 +15,18 @@
         <div id="nav_username">
             <h2>Sending Securely</h2>
         </div>
-        <div id="nav_icons">New Message</div>
+        <div id="nav_icons"><a href="/">New Message</a></div>
     </nav>
     <div class="container">
         <div class="retriever_form">
             <h2>Retrieve your Document</h2>
-            <form action="/viewer" method="POST">
-                <input type="text" name="id" id="id">
-                <input type="password" placeholder="document password" name="password" id="password">
+            <form action="/viewer" method="POST" id="form">
+                <label for="id">Message ID</label><input type="text" name="id" id="id" placeholder="ID of message">
+                <label for="password">Password</label><input type="password" placeholder="document password" name="password" id="password">
                 <button type="submit" id="retriever">Retrieve Message</button>
             </form>
         </div>
-        <% if(sender){ %>
+        <% if(sender.length > 0){ %>
             <div class="email">
                 <div class="from">
                     <h2>From:</h2>

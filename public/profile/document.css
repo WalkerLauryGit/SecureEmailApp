@@ -1,0 +1,33 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.retriever_form{
+   display: flex;
+   flex-direction: column;
+}
+
+#form{
+    display: flex;
+    flex-direction: column;
+}
+
+#form input{
+    margin: 10px;
+}
+
+.email{
+    width: 60%;
+}
+
+h2{
+    font-size: 1.5em;
+}
+
+p{
+    font-size: 2em;
+    margin-left: 25px;
+}
