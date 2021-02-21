@@ -40,6 +40,11 @@
                         <%= message %>
                     </p>
                 </div>
+                <div class="images">
+                    <% for (let img of images){ %>
+                        <img src="<%= img.url %>" alt="">
+                    <% } %>  
+                </div>
             </div>
     </div>
     <% } %>

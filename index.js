@@ -30,7 +30,12 @@ const emailSchema = new mongoose.Schema({
     recipient: String,
     password: String,
     message: String,
-
+    images: [
+        {
+            url: String,
+            filename: String
+        }
+    ]
 
 })
 
@@ -96,36 +101,42 @@ app.get('/', (req, res) => {
 })
 
 app.get('/document', (req, res)=>{
-    res.render('document', {sender: '', message: ''})
+    res.render('document', {sender: '', message: '', images: []})
 })
 
 app.post('/', upload.array('image'), (req, res) => {
-    // const {sender, recipient, password, message} = req.body
-    // // Left off adding an id to the email value before saving it to the database
-    // const email = new Email({ sender, recipient, password, message})
-    // email.save()
-    // .then((e) =>{
-    //     console.log(e, "successfully saved")
-    // })
-    // .catch(err => console.log(err));
+
+
+    //Loop over the images in req.files and add the path and url to email
+
+    const images = req.files.map(f => ({url: f.path, filename: f.filename}))
+
+
+
+    const {sender, recipient, password, message} = req.body
+    // Left off adding an id to the email value before saving it to the database
+    const email = new Email({ sender, recipient, password, message, images})
+    email.save()
+    .then((e) =>{
+        console.log(e, "successfully saved")
+    })
+    .catch(err => console.log(err));
     
 
-    // const from = 'donotreply@sendingsecurely.com'
-    // const msg = {
-    //     to: recipient,
-    //     from,
-    //     subject: `You have a message waiting from ${sender}`,
-    //     text: message,
-    //     html: `<div>Click the button to be taken to the secure messsage!<br> <a href="http://localhost:3000/viewer/${email._id}>Click here</a></div>"`
-    // }
+    const from = 'donotreply@sendingsecurely.com'
+    const msg = {
+        to: recipient,
+        from,
+        subject: `You have a message waiting from ${sender}`,
+        text: message,
+        html: `<div>Click the button to be taken to the secure messsage!<br> <a href="http://localhost:3000/viewer/${email._id}>Click here</a></div>"`
+    }
 
-    // sgMail.send(msg)
-    // .then(() => console.log('Email sent successfuly'))
-    // .catch(err => console.log(err.message))
+    sgMail.send(msg)
+    .then(() => console.log('Email sent successfuly'))
+    .catch(err => console.log(err.message))
 
-    // res.redirect('/')
-    console.log(req.body, req.files)
-    res.send('It worked')
+    res.redirect('/')
 })
 
 app.post('/viewer', async (req, res) => {
@@ -134,12 +145,12 @@ app.post('/viewer', async (req, res) => {
     .then(response => {
         console.log(response)
         console.log("Success")
-        const {sender, message} = response;
+        const {sender, message, images} = response;
         
-        res.render(`document`, {sender, message})
+        res.render(`document`, {sender, message, images})
     }).catch(err => {
         console.log(err)
-        res.render('document', {sender: '', message: ''})
+        res.render('document', {sender: '', message: '', images: []})
     })
 })
 

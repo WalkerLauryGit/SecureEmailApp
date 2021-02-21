@@ -10,8 +10,10 @@ cloudinary.config({
 
 const storage = new CloudinaryStorage({
     cloudinary,
-    folder: 'SecureSend',
-    allowedFormats: ['jpeg', 'png', 'jpg', 'jfif']
+    params: {
+        folder: 'SecureSend',
+        allowedFormats: ['jpeg', 'png', 'jpg', 'jfif']
+    },
 })
 
 module.exports = {
