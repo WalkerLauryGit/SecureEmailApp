@@ -3,10 +3,15 @@ const express = require('express')
 const sgMail = require('@sendgrid/mail')
 const session = require('express-session')
 const path = require('path')
+
+
+
+
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser')
 const multer = require('multer')
-const upload = multer({dest: 'uploads/'})
+const { storage } = require('./cloudinary')
+const upload = multer({storage})
 
 require('dotenv').config()
 
@@ -119,7 +124,7 @@ app.post('/', upload.array('image'), (req, res) => {
     // .catch(err => console.log(err.message))
 
     // res.redirect('/')
-    console.log(req.body, req.file)
+    console.log(req.body, req.files)
     res.send('It worked')
 })
 
