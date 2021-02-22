@@ -31,3 +31,11 @@ p{
     font-size: 2em;
     margin-left: 25px;
 }
+
+.images{
+    display: flex;
+}
+
+img{
+    width: 15%;
+}
