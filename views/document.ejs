@@ -21,10 +21,13 @@
         <div class="retriever_form" >
             <h2>Retrieve your Document</h2>
             <form action="/viewer" method="POST" id="form">
-                <label for="id">Message ID</label><input type="text" name="id" id="id" placeholder="ID of message">
-                <label for="password">Password</label><input type="password" placeholder="document password" name="password" id="password">
+                <label for="id">Message ID</label><input type="text" name="id" id="id" placeholder="ID of message" required>
+                <label for="password">Password</label><input type="password" placeholder="document password" name="password" id="password" required>
                 <button type="submit" id="retriever">Retrieve Message</button>
             </form>
+            <% if(err){ %>
+                <p><%= err %> </p>
+            <% } %>  
         </div>
         <% if(sender.length > 0){ %>
             <div class="email">
@@ -48,6 +51,9 @@
             </div>
     </div>
     <% } %>
+    <footer>
+        <p>This is made by Walker Laury Please dont sue me</p>
+    </footer>
 </body>
 
 </html>
