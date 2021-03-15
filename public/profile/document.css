@@ -3,11 +3,13 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    
 }
 
 .retriever_form{
    display: flex;
    flex-direction: column;
+   height: 90vh;
 }
 
 #form{

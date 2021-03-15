@@ -6,9 +6,6 @@ const path = require('path')
 
 // This is for dev only, creates a link in terminal for website
 const terminalLink = require('terminal-link')
-
-
-
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser')
 const multer = require('multer')
@@ -20,7 +17,7 @@ require('dotenv').config()
 
 // DATABASE MONGOOSE CONNECTION
 // Old Connection String mongodb://127.0.0.1:27017/securesend
-mongoose.connect('mongodb+srv://dmad:Copper14@securesend.bwzso.mongodb.net/securesend?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(`mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MOGNO_PASSWORD}@securesend.bwzso.mongodb.net/securesend?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log("The database bird has landed")
     })
@@ -45,36 +42,6 @@ const emailSchema = new mongoose.Schema({
 const Email = mongoose.model('Email', emailSchema)
 // END DATABASE MONGOOSE CONNECTION
 
-const users = [
-    {
-        name: 'Walker',
-        email: 'walkerclaury@protonmail.com',
-    }
-]
-
-const emails = [
-    {
-        id: 0,
-        sender: "walkerclaury@protonmail.com",
-        recipient: "jmichaels@feer.com",
-        topic: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure cupiditate maxime saepe ipsum dolores ad facilis rerum magni architecto aspernatur iusto et incidunt sed asperiores dolorem perferendis molestiae, odit quam?",
-        date: "2/15/21"
-    },
-    {
-        id: 1,
-        sender: "walkerclaury@protonmail.com",
-        recipient: "barnicles@fefer.com",
-        topic: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure cupiditate maxime saepe ipsum dolores ad facilis rerum magni architecto aspernatur iusto et incidunt sed asperiores dolorem perferendis molestiae, odit quam?",
-        date: "2/1/21"
-    },
-    {
-        id: 3,
-        sender: "walkerclaury@protonmail.com",
-        recipient: "ungasmoothbrain@feer.com",
-        topic: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure cupiditate maxime saepe ipsum dolores ad facilis rerum magni architecto aspernatur iusto et incidunt sed asperiores dolorem perferendis molestiae, odit quam?",
-        date: "2/4/21",
-    }
-]
 
 const SG_API = process.env.SG_API;
 
@@ -136,8 +103,8 @@ app.post('/', upload.array('image'), (req, res) => {
         subject: `You have a message waiting from ${sender}`,
         text: message,
         html: `<div>Click the button to be taken to the secure messsage!
-                <br> <a style="height: 10px; width: 10px" href="http://localhost:3000/viewer/${email._id}>
-                Click here</a></div>"
+                <br> <a style="height: 10px; width: 10px" href="http://localhost:3000/viewer/${email._id}">
+                Click here</a></div>
                 <div>
                 <p>The id of the message is ${email._id}</p>
                 <p>The password is ${email.password}</p>
@@ -154,7 +121,7 @@ app.post('/', upload.array('image'), (req, res) => {
 // This is what retrieves the actual message and returns the successful or returns nothing
 app.post('/viewer', async (req, res) => {
     console.log(req.body)
-    email = await Email.findById(req.body.id)
+    const email = await Email.findById(req.body.id)
 
         .then(response => {
             console.log(response)
@@ -163,14 +130,29 @@ app.post('/viewer', async (req, res) => {
             if (password === req.body.password) {
                 res.render(`document`, { sender, message, images, err: '' })
             } else {
-                res.render(`document`, { sender, message: '', images: [], err: 'Incorrect password' })
+                res.render(`document`, { sender: '', message: '', images: [], err: 'Incorrect password' })
             }
         }).catch(err => {
             console.log(err)
-            res.render('document', { sender: '', message: '', images: [], err: "Something happened" })
+            res.render('document', { sender: '', message: '', images: [], err: "Wrong ID" })
         })
 })
 
+app.get('/viewer/:id', async (req, res) => {
+    console.log(req.params.id)
+    const email = await Email.findById(req.params.id)
+
+    .then(response => {
+        console.log(response)
+        console.log("Success")
+        const {sender, message, images } = response;
+            res.render(`document`, { sender, message, images, err: '' })
+        }
+    ).catch(err => {
+        console.log(err)
+        res.render('document', { sender: '', message: '', images: [], err: "Wrong ID" })
+    })
+})
 
 app.listen(3000, () => {
     const link = terminalLink('Port 3000!!!', 'http://localhost:3000')

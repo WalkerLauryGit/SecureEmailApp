@@ -1,15 +1,30 @@
+a:link{
+    text-decoration: none;
+    color:#B9314F;
+  }
+
+a:visited{
+    text-decoration: none;
+    color:#B9314F;
+}
+
 body{
     margin: 0;
-    
+    font-family: 'Recursive', sans-serif;    
+    color:#B9314F;
+}
+
+.dbinfo{
+    color: #2E86AB;
 }
 
 nav{
     display: flex;
-    padding: 2em;    
+    padding:.5em;    
     margin:0;
-    background-color: antiquewhite;
+    background-color: #2E86AB;
     justify-content: space-between;
-
+    
 }
 
 #nav_username{
@@ -28,14 +43,15 @@ nav{
 
 .container{
     display: flex;
-    background-color: blanchedalmond;
+    background-color: white;
     justify-content: center;
     height: 85vh;
 }
 
 .content{
     display: flex;
-    background-color:rgb(190, 178, 161);
+    /* background-color:#9E90A2; */
+    background-color: white;
     width: 90%;
 }
 
@@ -61,8 +77,9 @@ nav{
 
 footer{
     flex-shrink: 0;
-    background-color: burlywood;
-    margin:0;
+    background-color: #2E86AB;
+    margin: 20px 0 0 0;
     width: 100%;
-    padding: 2em;
+    padding: .5em;
+    bottom: 0;
 }

@@ -5,15 +5,20 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="/profile/app.css">
+    
     <link rel="stylesheet" href="/profile/document.css">
+    
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Recursive&display=swap" rel="stylesheet">
     <title>Open a message</title>
 </head>
 
 <body>
     <nav>
         <div id="nav_username">
-            <h2>Sending Securely</h2>
+            <h2><a href="/">Sending Securely</a></h2>
         </div>
         <div id="nav_icons"><a href="/">New Message</a></div>
     </nav>
@@ -33,13 +38,13 @@
             <div class="email">
                 <div class="from">
                     <h2>From:</h2>
-                    <p>
+                    <p class="dbinfo">
                         <%= sender %>
                     </p>
                 </div>
                 <div class="message">
                     <h2>Message:</h2>
-                    <p>
+                    <p class="dbinfo">
                         <%= message %>
                     </p>
                 </div>
@@ -51,9 +56,11 @@
             </div>
     </div>
     <% } %>
+</div>
     <footer>
         <p>This is made by Walker Laury Please dont sue me</p>
     </footer>
+
 </body>
 
 </html>
