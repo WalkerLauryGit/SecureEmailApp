@@ -1,5 +1,7 @@
 const express = require('express')
-// const { auth, requiresAuth } = require('express-openid-connect')
+const https = require('https')
+const fs = require('fs')
+const { auth, requiresAuth } = require('express-openid-connect')
 const sgMail = require('@sendgrid/mail')
 const session = require('express-session')
 const path = require('path')
@@ -12,12 +14,14 @@ const multer = require('multer')
 const { storage } = require('./cloudinary')
 const upload = multer({ storage })
 
+const port = process.env.PORT || 3000;
+
 require('dotenv').config()
 
 
 // DATABASE MONGOOSE CONNECTION
 // Old Connection String mongodb://127.0.0.1:27017/securesend
-mongoose.connect(`mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MOGNO_PASSWORD}@securesend.bwzso.mongodb.net/securesend?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(`mongodb+srv://dmad:Copper14@securesend.bwzso.mongodb.net/securesend?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log("The database bird has landed")
     })
@@ -46,6 +50,19 @@ const Email = mongoose.model('Email', emailSchema)
 const SG_API = process.env.SG_API;
 
 const app = express();
+
+app.use(
+    auth({
+    authRequired: false,
+    auth0Logout: true,
+    issuerBaseURL: process.env.ISSUER_BASE_URL,
+    baseURL: process.env.BASE_URL,
+    clientID: process.env.CLIENT_ID,
+    secret: process.env.SECRET
+})
+)
+
+
 sgMail.setApiKey(SG_API)
 // app.use(auth(config))
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -59,6 +76,14 @@ app.use(session({
     cookie: { secure: true }
 }))
 
+app.get('/', (req, res) => {
+    if(req.oidc.isAuthenticated()){
+        res.redirect('/new')
+    }else{
+    res.render('home')
+    }
+})
+
 // Page where you see what is retrieved from /document
 app.get('/profile', (req, res) => {
 
@@ -66,7 +91,7 @@ app.get('/profile', (req, res) => {
 })
 
 // Home page where you can create a request
-app.get('/', (req, res) => {
+app.get('/new', requiresAuth(), (req, res) => {
 
     res.render('index')
 })
@@ -77,7 +102,7 @@ app.get('/document', (req, res) => {
 })
 
 // Uploads images and message to cloudinary
-app.post('/', upload.array('image'), (req, res) => {
+app.post('/new', upload.array('image'), (req, res) => {
 
 
     //Loop over the images in req.files and add the path and url to email
@@ -103,7 +128,7 @@ app.post('/', upload.array('image'), (req, res) => {
         subject: `You have a message waiting from ${sender}`,
         text: message,
         html: `<div>Click the button to be taken to the secure messsage!
-                <br> <a style="height: 10px; width: 10px" href="http://localhost:3000/viewer/${email._id}">
+                <br> <a style="height: 10px; width: 10px" href="http://sendingsecurely.com/viewer/${email._id}">
                 Click here</a></div>
                 <div>
                 <p>The id of the message is ${email._id}</p>
@@ -115,7 +140,7 @@ app.post('/', upload.array('image'), (req, res) => {
         .then(() => console.log('Email sent successfuly'))
         .catch(err => console.log(err.message))
 
-    res.redirect('/')
+    res.redirect('/new')
 })
 
 // This is what retrieves the actual message and returns the successful or returns nothing
@@ -154,7 +179,12 @@ app.get('/viewer/:id', async (req, res) => {
     })
 })
 
-app.listen(3000, () => {
-    const link = terminalLink('Port 3000!!!', 'http://localhost:3000')
-    console.log(`Application is running on ${link}`)
+
+const sslServer = https.createServer({
+    key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')),
+    cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem'))
+}, app)
+
+sslServer.listen(port, () => {
+    console.log(`Application is running on ${port}`)
 })
